@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_list_case_study/firebase_options.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list_case_study/app/features/auth/login/bloc/bloc/login_bloc.dart';
+import 'package:todo_list_case_study/app/features/auth/login/ui/login_screen.dart';
+import 'package:todo_list_case_study/core/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,12 +17,16 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<LoginBloc>(
+            create: (BuildContext context) => LoginBloc(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.dark(useMaterial3: true),
+          home: const LoginScreen(),
+        ));
   }
 }
