@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:todo_list_case_study/app/features/auth/register/ui/register_screen.dart';
+import 'package:todo_list_case_study/app/ui/home_screen.dart';
 
 String deneme = "";
 
@@ -96,17 +97,24 @@ class _LoginFormState extends State<LoginForm> {
                   SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () async {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()), // Hedef sayfanın sınıfını verin
+                          );
+                        },
                         child: const Text(
                           'GİRİŞ YAP',
                         ),
                       )),
                   TextButton(
                     onPressed: () {
-                       Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => RegisterScreen()), // Hedef sayfanın sınıfını verin
-  );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterScreen()), // Hedef sayfanın sınıfını verin
+                      );
                     },
                     child: RichText(
                       text: TextSpan(
