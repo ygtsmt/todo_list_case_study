@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_case_study/app/features/auth/login/bloc/bloc/login_bloc.dart';
 import 'package:todo_list_case_study/app/features/auth/login/ui/login_screen.dart';
+import 'package:todo_list_case_study/app/features/auth/register/bloc/register_bloc.dart';
 import 'package:todo_list_case_study/core/firebase_options.dart';
 
 void main() async {
@@ -21,6 +22,9 @@ class MainApp extends StatelessWidget {
         providers: [
           BlocProvider<LoginBloc>(
             create: (BuildContext context) => LoginBloc(),
+          ),
+          BlocProvider<RegisterBloc>(
+            create: (BuildContext context) => RegisterBloc(),
           ),
         ],
         child: MaterialApp(
