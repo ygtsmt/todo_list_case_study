@@ -21,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int bottomNavBarCurrentIndex = 0;
 
-  // Sayfaları burada tanımlayabilirsiniz
   final List<Widget> bottomNavBarPages = [
     const TodosScreen(),
     const ProfileScreen(),

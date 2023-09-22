@@ -10,8 +10,13 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(final BuildContext context) {
-    return const Column(
-      children: [Text("Profile Screen")],
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.red,
+        child: const Center(
+          child: Column(children: [Text("PROFILE SCREEN")]),
+        ),
+      ),
     );
   }
 }

@@ -10,8 +10,13 @@ class TodosScreen extends StatefulWidget {
 class _TodosScreenState extends State<TodosScreen> {
   @override
   Widget build(final BuildContext context) {
-    return const Column(
-      children: [Text("Todos Screen")],
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.red,
+        child: const Center(
+          child: Column(children: [Text("TODOS SCREEN")]),
+        ),
+      ),
     );
   }
 }

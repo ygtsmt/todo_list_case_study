@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-String deneme = "";
-
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
     Key? key,

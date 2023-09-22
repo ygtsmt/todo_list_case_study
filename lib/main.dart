@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_case_study/app/bloc/bloc/app_bloc.dart';
-import 'package:todo_list_case_study/app/features/auth/login/bloc/bloc/login_bloc.dart';
+import 'package:todo_list_case_study/app/features/auth/login/bloc/phone_auth_bloc.dart';
+import 'package:todo_list_case_study/app/features/auth/login/data/repository/phone_auth_repository.dart';
 import 'package:todo_list_case_study/app/features/auth/login/ui/login_screen.dart';
 import 'package:todo_list_case_study/app/features/auth/register/bloc/register_bloc.dart';
 import 'package:todo_list_case_study/app/features/profile/bloc/profile_bloc.dart';
@@ -23,8 +24,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider<LoginBloc>(
-            create: (BuildContext context) => LoginBloc(),
+          BlocProvider<PhoneAuthBloc>(
+            create: (BuildContext context) => PhoneAuthBloc(phoneAuthRepository: PhoneAuthRepository()),
           ),
           BlocProvider<RegisterBloc>(
             create: (BuildContext context) => RegisterBloc(),
