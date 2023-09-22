@@ -15,15 +15,14 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  bool _obscureText = true;
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _smsCodeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _smsCodeKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _obscureText = true;
   }
 
   @override
@@ -38,11 +37,11 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<PhoneAuthBloc, PhoneAuthState>(
       listener: (context, state) {
         if (state is PhoneAuthVerified) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => const HomeScreen(),
-            ),
-          );
+          // Navigator.of(context).pushReplacement(
+          //   MaterialPageRoute(
+          //     builder: (_) => const HomeScreen(),
+          //   ),
+          // );
         }
 
         if (state is PhoneAuthError) {
@@ -101,50 +100,78 @@ class _LoginFormState extends State<LoginForm> {
                                         ),
                                       );
                                 },
-                                child: const Text("Kod Gonder"),
+                                child: const Text("Kod Gönder"),
                               ),
                             ),
                             validator: MultiValidator(
                               [
-                                RequiredValidator(errorText: 'error'),
+                                RequiredValidator(errorText: 'Boş bırakılamaz.'),
                               ],
                             ),
                           )
                         else
                           Column(
                             children: [
-                              TextFormField(
-                                controller: _smsCodeController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Doğrulama Kodu',
-                                  prefixIcon: Icon(Icons.onetwothree_outlined),
-                                ),
-                                keyboardType: TextInputType.number,
-                                obscureText: _obscureText,
-                                textInputAction: TextInputAction.done,
-                                validator: MultiValidator(
-                                  [
-                                    RequiredValidator(errorText: 'error'),
-                                  ],
+                              Form(
+                                key: _smsCodeKey,
+                                child: TextFormField(
+                                  controller: _smsCodeController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Doğrulama Kodu',
+                                    prefixIcon: Icon(Icons.onetwothree_outlined),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  textInputAction: TextInputAction.done,
+                                  validator: MultiValidator(
+                                    [RequiredValidator(errorText: 'Boş bırakılamaz.')],
+                                  ),
                                 ),
                               ),
                               const SizedBox(
                                 height: 16,
                               ),
                               SizedBox(
-                                width: double.infinity,
-                                child: FilledButton(
-                                  onPressed: () {
-                                    context.read<PhoneAuthBloc>().add(VerifySentOtpEvent(
-                                        otpCode: _smsCodeController.text, verificationId: state.verificationId));
-                                  },
-                                  child: const Text(
-                                    'GİRİŞ YAP',
-                                  ),
-                                ),
-                              ),
+                                  width: double.infinity,
+                                  child: FilledButton(
+                                    onPressed: () {
+                                      if (_smsCodeKey.currentState!.validate()) {
+                                        context.read<PhoneAuthBloc>().add(VerifySentOtpEvent(
+                                            otpCode: _smsCodeController.text, verificationId: state.verificationId));
+                                      }
+                                    },
+                                    child: const Text(
+                                      'DOĞRULA',
+                                    ),
+                                  )),
                             ],
                           ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        SizedBox(
+                            width: double.infinity,
+                            child: FilledButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (state is PhoneAuthVerified) {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => const HomeScreen(),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Telefon doğrulaması gerekiyor."),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              child: const Text(
+                                'GİRİŞ YAP',
+                              ),
+                            )),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
