@@ -6,6 +6,7 @@ import 'package:todo_list_case_study/app/features/auth/login/bloc/phone_auth_blo
 import 'package:todo_list_case_study/app/features/auth/login/data/repository/phone_auth_repository.dart';
 import 'package:todo_list_case_study/app/features/auth/login/ui/login_screen.dart';
 import 'package:todo_list_case_study/app/features/auth/register/bloc/register_bloc.dart';
+import 'package:todo_list_case_study/app/features/auth/register/data/register_services.dart';
 import 'package:todo_list_case_study/app/features/profile/bloc/profile_bloc.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
 import 'package:todo_list_case_study/core/firebase_options.dart';
@@ -28,7 +29,7 @@ class MainApp extends StatelessWidget {
             create: (BuildContext context) => PhoneAuthBloc(phoneAuthRepository: PhoneAuthRepository()),
           ),
           BlocProvider<RegisterBloc>(
-            create: (BuildContext context) => RegisterBloc(),
+            create: (BuildContext context) => RegisterBloc(FirestoreService()),
           ),
           BlocProvider<AppBloc>(
             create: (BuildContext context) => AppBloc(),

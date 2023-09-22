@@ -33,8 +33,6 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  final String verificationId = "";
-
   @override
   Widget build(final BuildContext context) {
     return BlocListener<PhoneAuthBloc, PhoneAuthState>(
@@ -85,75 +83,73 @@ class _LoginFormState extends State<LoginForm> {
                     Column(
                       children: [
                         if (state is! PhoneAuthCodeSentSuccess)
-                        TextFormField(
-                          controller: _phoneNumberController,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.text,
-                          autocorrect: false,
-                          decoration: InputDecoration(
-                            labelText: 'Telefon Numarası',
-                            prefixIcon: const Icon(
-                              Icons.phone_android_outlined,
-                            ),
-                            suffixIcon: TextButton(
-                              onPressed: () {
-                                context.read<PhoneAuthBloc>().add(
-                                      SendOtpToPhoneEvent(
-                                        phoneNumber: _phoneNumberController.text,
-                                      ),
-                                    );
-                              },
-                              child: const Text("Kod Gonder"),
-                            ),
-                          ),
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(errorText: 'error'),
-                            ],
-                          ),
-                        )
-                         else
-                        Column(
-                          children: [
-                            TextFormField(
-                              controller: _smsCodeController,
-                              decoration: const InputDecoration(
-                                labelText: 'Doğrulama Kodu',
-                                prefixIcon: Icon(Icons.onetwothree_outlined),
+                          TextFormField(
+                            controller: _phoneNumberController,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            decoration: InputDecoration(
+                              labelText: 'Telefon Numarası',
+                              prefixIcon: const Icon(
+                                Icons.phone_android_outlined,
                               ),
-                              keyboardType: TextInputType.number,
-                              obscureText: _obscureText,
-                              textInputAction: TextInputAction.done,
-                              validator: MultiValidator(
-                                [
-                                  RequiredValidator(errorText: 'error'),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            
-                            SizedBox(
-                              width: double.infinity,
-                              child: FilledButton(
+                              suffixIcon: TextButton(
                                 onPressed: () {
-                               context.read<PhoneAuthBloc>().add(VerifySentOtpEvent(
-        otpCode: _smsCodeController.text, verificationId: state.verificationId));
+                                  context.read<PhoneAuthBloc>().add(
+                                        SendOtpToPhoneEvent(
+                                          phoneNumber: _phoneNumberController.text,
+                                        ),
+                                      );
                                 },
-                                child: const Text(
-                                  'GİRİŞ YAP',
+                                child: const Text("Kod Gonder"),
+                              ),
+                            ),
+                            validator: MultiValidator(
+                              [
+                                RequiredValidator(errorText: 'error'),
+                              ],
+                            ),
+                          )
+                        else
+                          Column(
+                            children: [
+                              TextFormField(
+                                controller: _smsCodeController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Doğrulama Kodu',
+                                  prefixIcon: Icon(Icons.onetwothree_outlined),
+                                ),
+                                keyboardType: TextInputType.number,
+                                obscureText: _obscureText,
+                                textInputAction: TextInputAction.done,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(errorText: 'error'),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: FilledButton(
+                                  onPressed: () {
+                                    context.read<PhoneAuthBloc>().add(VerifySentOtpEvent(
+                                        otpCode: _smsCodeController.text, verificationId: state.verificationId));
+                                  },
+                                  child: const Text(
+                                    'GİRİŞ YAP',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen()),
+                              MaterialPageRoute(builder: (context) => const RegisterScreen()),
                             );
                           },
                           child: RichText(

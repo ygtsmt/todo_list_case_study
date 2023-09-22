@@ -1,6 +1,20 @@
-part of 'register_bloc.dart';
+import 'package:flutter/material.dart';
 
 @immutable
-sealed class RegisterState {}
+abstract class RegisterState {}
 
-final class RegisterInitial extends RegisterState {}
+class RegisterInitial extends RegisterState {}
+
+class RegisterLoading extends RegisterState {}
+
+class RegisterOperationSuccess extends RegisterState {
+  final String message;
+
+  RegisterOperationSuccess(this.message);
+}
+
+class RegisterError extends RegisterState {
+  final String errorMessage;
+
+  RegisterError(this.errorMessage);
+}
