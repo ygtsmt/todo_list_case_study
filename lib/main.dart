@@ -9,6 +9,7 @@ import 'package:todo_list_case_study/app/features/auth/register/bloc/register_bl
 import 'package:todo_list_case_study/app/features/auth/register/data/register_services.dart';
 import 'package:todo_list_case_study/app/features/profile/bloc/profile_bloc.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
+import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
 import 'package:todo_list_case_study/core/firebase_options.dart';
 
 void main() async {
@@ -37,9 +38,9 @@ class MainApp extends StatelessWidget {
           BlocProvider<ProfileBloc>(
             create: (BuildContext context) => ProfileBloc(),
           ),
-          BlocProvider<TodosBloc>(
-            create: (BuildContext context) => TodosBloc(),
-          ),
+          BlocProvider<TodoBloc>(
+            create: (BuildContext context) => TodoBloc(FirestoreServiceTodos())),
+          
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,13 +1,52 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
-part 'todos_event.dart';
-part 'todos_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list_case_study/app/features/todos/bloc/todos_event.dart';
+import 'package:todo_list_case_study/app/features/todos/bloc/todos_state.dart';
+import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
 
-class TodosBloc extends Bloc<TodosEvent, TodosState> {
-  TodosBloc() : super(TodosInitial()) {
-    on<TodosEvent>((event, emit) {
-      // TODO: implement event handler
+class TodoBloc extends Bloc<TodoEvent, TodoState> {
+  final FirestoreServiceTodos _firestoreService;
+
+  TodoBloc(this._firestoreService) : super(TodoInitial()) {
+    on<LoadTodos>((event, emit) async {
+      try {
+        emit(TodoLoading());
+        final todos = await _firestoreService.getTodos(event.uid).first;
+        emit(TodoLoaded(todos));
+      } catch (e) {
+        emit(TodoError('Failed to load todos.'));
+      }
     });
+
+    on<AddTodo>((event, emit) async {
+      try {
+        emit(TodoLoading());
+        await _firestoreService.addTodo(event.todo,event.uid);
+        emit(TodoOperationSuccess('Todo added successfully.'));
+      } catch (e) {
+        emit(TodoError('Failed to add todo.'));
+      }
+    });
+
+    on<UpdateTodo>((event, emit)  async {
+      try {
+        emit(TodoLoading());
+        await _firestoreService.updateTodo(event.todo);
+        emit(TodoOperationSuccess('Todo updated successfully.'));
+      } catch (e) {
+        emit(TodoError('Failed to update todo.'));
+      }
+    });
+
+    on<DeleteTodo>((event, emit) async {
+      try {
+        emit(TodoLoading());
+        await _firestoreService.deleteTodo(event.todoId);
+        emit(TodoOperationSuccess('Todo deleted successfully.'));
+      } catch (e) {
+        emit(TodoError('Failed to delete todo.'));
+      }
+    });
+
   }
 }
