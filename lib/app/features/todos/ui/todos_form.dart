@@ -172,18 +172,20 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Card(
-                              elevation: 20,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(_firstDateController.text),
-                              )),
-                          Card(
-                              elevation: 20,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(_lastDateController.text),
-                              )),
+                          if (_firstDateController.text.isNotEmpty)
+                            Card(
+                                elevation: 20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(_firstDateController.text),
+                                )),
+                          if (_lastDateController.text.isNotEmpty)
+                            Card(
+                                elevation: 20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(_lastDateController.text),
+                                )),
                         ],
                       ),
                       SizedBox(
