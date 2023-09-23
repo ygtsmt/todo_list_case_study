@@ -12,6 +12,7 @@ class FirestoreService {
       'nickName': user.nickName,
       'eMail': user.eMail,
       'phoneNumber': user.phoneNumber,
+      'todos':[]
     });
   }
 }

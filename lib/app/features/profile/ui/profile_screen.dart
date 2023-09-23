@@ -25,40 +25,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(final BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-      if (state is ProfileLoading) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (state is ProfileLoaded) {
-        final profile = state.profile;
-        return Center(
-          child: Column(
-            children: [
-              Text(
-                "${profile.name}  ${profile.surName}",
-                style: Theme.of(context).textTheme.displaySmall,
+    return Column(
+      children: [
+        BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+          if (state is ProfileLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is ProfileLoaded) {
+            final profile = state.profile;
+            return Column(
+              children: [
+                Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "${profile.name}  ${profile.surName}",
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                      Text(profile.phoneNumber),
+                      Text(profile.eMail),
+                      Text(profile.nickName),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+          return Container();
+        }),
+        SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => const LoginScreen(),
+                  ),
+                );
+              },
+              child: const Text(
+                'ÇIKIŞ YAP',
               ),
-              Text(profile.phoneNumber),
-              Text(profile.eMail),
-              Text(profile.nickName),
-              SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) => const LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'ÇIKIŞ YAP',
-                    ),
-                  )),
-            ],
-          ),
-        );
-      }
-      return Container();
-    });
+            )),
+      ],
+    );
   }
 }

@@ -153,6 +153,7 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
                                 location: "location",
                               );
                               BlocProvider.of<TodoBloc>(context).add(AddTodo(todo, userUID));
+                              Navigator.pop(context);
                             },
                             child: const Text("OLUŞTUR"))),
                   ],
