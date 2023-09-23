@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list_case_study/app/features/todos/data/model/todo_model.dart';
@@ -28,23 +27,68 @@ class TodoListView extends StatelessWidget {
             itemCount: todos!.length,
             itemBuilder: (context, index) {
               final todo = todos[index];
-              return SizedBox(
-                child: Card(
-                    child: ListTile(
-                  titleAlignment: ListTileTitleAlignment.center,
-                  title: Text(
-                    todo.title ?? "boş",
-                    textAlign: TextAlign.start,
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                )),
-              );
+              return Card(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            todo.title ?? "bos",
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            todo.description ?? "bos",
+                            style: Theme.of(context).textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            todo.address ?? "bos",
+                            style: Theme.of(context).textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            todo.startDate ?? "bos",
+                            style: Theme.of(context).textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          todo.imageUrl != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: 100,
+                                      child: Image.network(todo.imageUrl!),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(
+                                  height: 100,
+                                  child: Text("Görsel Yok"),
+                                ),
+                          FilledButton.icon(
+                              onPressed: () {}, icon: const Icon(Icons.directions), label: const Text("Konum"))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ));
             },
           );
         }
       },
     );
   }
-
-  
 }

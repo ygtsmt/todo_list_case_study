@@ -6,6 +6,7 @@ class TodoModel {
   String? startDate;
   String? finishDate;
   String? location;
+  String? imageUrl;
 
   TodoModel({
     required this.id,
@@ -15,6 +16,7 @@ class TodoModel {
     required this.startDate,
     required this.finishDate,
     required this.location,
+    required this.imageUrl,
   });
 
   TodoModel copyWith({
@@ -25,6 +27,7 @@ class TodoModel {
     String? startDate,
     String? finishDate,
     String? location,
+    String? imageUrl,
   }) {
     return TodoModel(
       id: id ?? this.id,
@@ -34,6 +37,7 @@ class TodoModel {
       startDate: startDate ?? startDate,
       finishDate: finishDate ?? finishDate,
       location: location ?? location,
+      imageUrl: imageUrl ?? imageUrl,
       
     );
   }

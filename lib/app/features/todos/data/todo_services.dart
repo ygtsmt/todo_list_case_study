@@ -24,6 +24,7 @@ class FirestoreServiceTodos {
           startDate: todo['startDate'],
           finishDate: todo['finishDate'],
           location: todo['location'],
+          imageUrl: todo['imageUrl'],
         );
       }).toList();
     });
@@ -43,6 +44,7 @@ class FirestoreServiceTodos {
             'startDate': todo.startDate,
             'finishDate': todo.finishDate,
             'location': todo.location,
+            'imageUrl': todo.imageUrl,
           }
         ])
       });
@@ -60,6 +62,7 @@ class FirestoreServiceTodos {
       'startDate': todo.startDate,
       'finishDate': todo.finishDate,
       'location': todo.location,
+      'imageUrl': todo.imageUrl,
     });
   }
 
