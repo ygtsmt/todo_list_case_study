@@ -8,6 +8,7 @@ import 'package:todo_list_case_study/app/features/auth/login/ui/login_screen.dar
 import 'package:todo_list_case_study/app/features/auth/register/bloc/register_bloc.dart';
 import 'package:todo_list_case_study/app/features/auth/register/data/register_services.dart';
 import 'package:todo_list_case_study/app/features/profile/bloc/profile_bloc.dart';
+import 'package:todo_list_case_study/app/features/profile/data/profile_services.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
 import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
 import 'package:todo_list_case_study/core/firebase_options.dart';
@@ -36,7 +37,7 @@ class MainApp extends StatelessWidget {
             create: (BuildContext context) => AppBloc(),
           ),
           BlocProvider<ProfileBloc>(
-            create: (BuildContext context) => ProfileBloc(),
+            create: (BuildContext context) => ProfileBloc(FirestoreServiceProfile()),
           ),
           BlocProvider<TodoBloc>(
             create: (BuildContext context) => TodoBloc(FirestoreServiceTodos())),

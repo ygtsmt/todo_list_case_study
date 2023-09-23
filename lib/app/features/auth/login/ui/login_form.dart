@@ -36,13 +36,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(final BuildContext context) {
     return BlocListener<PhoneAuthBloc, PhoneAuthState>(
       listener: (context, state) {
-        if (state is PhoneAuthVerified) {
-          // Navigator.of(context).pushReplacement(
-          //   MaterialPageRoute(
-          //     builder: (_) => const HomeScreen(),
-          //   ),
-          // );
-        }
+        if (state is PhoneAuthVerified) {}
 
         if (state is PhoneAuthError) {
           ScaffoldMessenger.of(context).showSnackBar(

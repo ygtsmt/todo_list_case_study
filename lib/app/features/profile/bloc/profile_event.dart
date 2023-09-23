@@ -1,4 +1,9 @@
-part of 'profile_bloc.dart';
+import 'package:flutter/material.dart';
 
 @immutable
-sealed class ProfileEvent {}
+abstract class ProfileEvent {}
+
+class LoadProfile extends ProfileEvent {
+  final String uid;
+  LoadProfile(this.uid);
+}
