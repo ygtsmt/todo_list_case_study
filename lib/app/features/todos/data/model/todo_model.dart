@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class TodoModel {
   String? id;
   String? title;
   String? description;
   String? address;
-  String? startDate;
-  String? finishDate;
+  Timestamp? startDate;
+  Timestamp? finishDate;
   String? location;
   String? imageUrl;
 
@@ -24,8 +26,8 @@ class TodoModel {
     String? title,
     String? description,
     String? address,
-    String? startDate,
-    String? finishDate,
+    Timestamp? startDate,
+    Timestamp? finishDate,
     String? location,
     String? imageUrl,
   }) {
@@ -38,7 +40,6 @@ class TodoModel {
       finishDate: finishDate ?? finishDate,
       location: location ?? location,
       imageUrl: imageUrl ?? imageUrl,
-      
     );
   }
 }

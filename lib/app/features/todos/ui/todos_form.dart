@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_event.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_state.dart';
@@ -31,6 +33,10 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
   File? _photo;
   Image? _todoImage;
   final ImagePicker _picker = ImagePicker();
+  DateTime selectedDateFirst = DateTime.now();
+  DateTime selectedDateLast = DateTime.now();
+  final TextEditingController _firstDateController = TextEditingController();
+  final TextEditingController _lastDateController = TextEditingController();
 
   @override
   void initState() {
@@ -60,6 +66,25 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                              onPressed: () {
+                                _showPicker(context);
+                              },
+                              child: const Text("Görsel Ekle"))),
+                      _todoImage != null
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: SizedBox(
+                                  height: 200,
+                                  child: _todoImage,
+                                ),
+                              ),
+                            )
+                          : Container(),
                       TextFormField(
                         controller: _noteTitleController,
                         textInputAction: TextInputAction.next,
@@ -120,8 +145,10 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
                           Expanded(
                             child: SizedBox(
                               width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: () {},
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _selectDateStart(context);
+                                },
                                 child: const Text("Başlangıç Tarihi"),
                               ),
                             ),
@@ -132,44 +159,50 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
                           Expanded(
                             child: SizedBox(
                               width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: () {},
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _selectDateEnd(context);
+                                },
                                 child: const Text("Bitiş Tarihi"),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 8,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Card(
+                              elevation: 20,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(_firstDateController.text),
+                              )),
+                          Card(
+                              elevation: 20,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(_lastDateController.text),
+                              )),
+                        ],
                       ),
                       SizedBox(
                           width: double.infinity,
-                          child: OutlinedButton(onPressed: () {}, child: const Text("Konumunu Ekle"))),
-                      SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton(
-                              onPressed: () {
-                                _showPicker(context);
-                              },
-                              child: const Text("Görsel Ekle"))),
-                      _todoImage != null
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(height: 200, child: _todoImage),
-                            )
-                          : Container(),
+                          child: OutlinedButton(onPressed: () {}, child: const Text("Konum Ekle"))),
                       SizedBox(
                           width: double.infinity,
                           child: FilledButton(
                               onPressed: () {
+                                final firstDate = Timestamp.fromDate(selectedDateFirst);
+                                final lastDate = Timestamp.fromDate(selectedDateLast);
+
                                 final todo = TodoModel(
                                     id: todoUuid,
                                     title: _noteTitleController.text,
                                     description: _noteDescriptionController.text,
                                     address: _noteAddressController.text,
-                                    startDate: "_selectedFirstDate.toString()",
-                                    finishDate: "_selectedLastDate.toString()",
+                                    startDate: firstDate,
+                                    finishDate: lastDate,
                                     location: "location",
                                     imageUrl: imageUrl);
 
@@ -186,6 +219,36 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
         ),
       ),
     );
+  }
+
+  Future _selectDateStart(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDateFirst,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (picked != null) {
+      setState(() {
+        selectedDateFirst = picked;
+        _firstDateController.text = DateFormat('dd/MM/yyyy').format(selectedDateFirst);
+      });
+    }
+  }
+
+  Future _selectDateEnd(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDateLast,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (picked != null) {
+      setState(() {
+        selectedDateLast = picked;
+        _lastDateController.text = DateFormat('dd/MM/yyyy').format(selectedDateLast);
+      });
+    }
   }
 
   void _showPicker(context) {
