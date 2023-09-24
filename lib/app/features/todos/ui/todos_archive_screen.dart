@@ -111,7 +111,7 @@ class TodoArchiveScreen extends StatelessWidget {
                                                 BlocProvider.of<TodoBloc>(context)
                                                     .add(DeleteTodoArchive(todo.id!, auth.currentUser!.uid));
                                               },
-                                              icon: const Icon(Icons.archive_outlined)),
+                                              icon: const Icon(Icons.delete)),
                                         ],
                                       )
                                     ],

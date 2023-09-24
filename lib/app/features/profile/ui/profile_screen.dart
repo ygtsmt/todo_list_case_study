@@ -37,13 +37,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Center(
                   child: Column(
                     children: [
-                      Text(
-                        "${profile.name}  ${profile.surName}",
-                        style: Theme.of(context).textTheme.displaySmall,
+                      Card(
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "${profile.name}  ${profile.surName}",
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                        ),
                       ),
-                      Text(profile.phoneNumber),
-                      Text(profile.eMail),
-                      Text(profile.nickName),
+                      profileText(profile.phoneNumber),
+                      profileText(profile.eMail),
+                      profileText(profile.nickName),
+                      const Divider(),
                     ],
                   ),
                 ),
@@ -68,5 +75,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )),
       ],
     );
+  }
+
+  Card profileText(text) {
+    return Card(
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(text),
+        ));
   }
 }
