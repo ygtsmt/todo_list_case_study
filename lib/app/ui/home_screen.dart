@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
                   handset: (final BuildContext context, final Screen screen) {
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                       child: bottomNavBarPages[bottomNavBarCurrentIndex],
                     );
                   },

@@ -27,6 +27,15 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         emit(TodoError('Failed to add todo.'));
       }
     });
+    on<AddTodoArchive>((event, emit) async {
+      try {
+        emit(TodoLoading());
+        await _firestoreService.addTodoArchive(event.todo,event.uid);
+        emit(TodoOperationSuccess('Todo added successfully.'));
+      } catch (e) {
+        emit(TodoError('Failed to add todo.'));
+      }
+    });
 
     on<UpdateTodo>((event, emit)  async {
       try {
@@ -41,7 +50,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<DeleteTodo>((event, emit) async {
       try {
         emit(TodoLoading());
-        await _firestoreService.deleteTodo(event.todoId);
+        await _firestoreService.deleteTodo(event.todoId,event.userId);
         emit(TodoOperationSuccess('Todo deleted successfully.'));
       } catch (e) {
         emit(TodoError('Failed to delete todo.'));

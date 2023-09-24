@@ -16,6 +16,13 @@ class AddTodo extends TodoEvent {
   AddTodo(this.todo, this.uid);
 }
 
+class AddTodoArchive extends TodoEvent {
+  final TodoModel todo;
+  final String uid;
+
+  AddTodoArchive(this.todo, this.uid);
+}
+
 class UpdateTodo extends TodoEvent {
   final TodoModel todo;
 
@@ -23,7 +30,8 @@ class UpdateTodo extends TodoEvent {
 }
 
 class DeleteTodo extends TodoEvent {
+  final String userId;
   final String todoId;
 
-  DeleteTodo(this.todoId);
+  DeleteTodo(this.todoId, this.userId);
 }

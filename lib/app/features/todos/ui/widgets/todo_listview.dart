@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
+import 'package:todo_list_case_study/app/features/todos/bloc/todos_event.dart';
 import 'package:todo_list_case_study/app/features/todos/data/model/todo_model.dart';
 import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
 import 'package:todo_list_case_study/app/features/todos/ui/todo_map.dart';
@@ -42,71 +45,92 @@ class TodoListView extends StatelessWidget {
                 child: Card(
                     child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              todo.title ?? "",
-                              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  todo.title ?? "",
+                                  style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  todo.description ?? "",
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  "Yer: ${todo.address ?? ""}",
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  "${difference.inDays} gün kaldı",
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
-                            Text(
-                              todo.description ?? "",
-                              style: Theme.of(context).textTheme.titleMedium,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "Yer: ${todo.address ?? ""}",
-                              style: Theme.of(context).textTheme.titleSmall,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "${difference.inDays} gün kaldı",
-                              style: Theme.of(context).textTheme.titleSmall,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "${todo.location!.latitude}s${todo.location!.latitude}",
-                              style: Theme.of(context).textTheme.titleSmall,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            if (todo.imageUrl!.length > 10)
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                if (todo.imageUrl!.length > 10)
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        height: 100,
+                                        child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(16.0),
+                                            child: Image.network(todo.imageUrl!)),
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  const SizedBox(
                                     height: 100,
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(16.0),
-                                        child: Image.network(todo.imageUrl!)),
+                                    child: Center(
+                                      child: Text(
+                                        "Görsel Yok",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              )
-                            else
-                              const SizedBox(
-                                height: 100,
-                                child: Center(
-                                  child: Text(
-                                    "Görsel Yok",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      const Icon(Icons.arrow_forward_ios_outlined),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton.outlined(
+                              onPressed: () {
+                                final todoArchive = TodoModel(
+                                    id: todo.id,
+                                    title: todo.title,
+                                    description: todo.description,
+                                    address: todo.address,
+                                    startDate: todo.startDate,
+                                    finishDate: todo.finishDate,
+                                    location: todo.location,
+                                    imageUrl: todo.imageUrl);
+
+                                BlocProvider.of<TodoBloc>(context)
+                                    .add(AddTodoArchive(todoArchive, auth.currentUser!.uid));
+                                BlocProvider.of<TodoBloc>(context).add(DeleteTodo(todo.id!, auth.currentUser!.uid));
+                              },
+                              icon: const Icon(Icons.archive_outlined)),
+                        ],
+                      )
                     ],
                   ),
                 )),

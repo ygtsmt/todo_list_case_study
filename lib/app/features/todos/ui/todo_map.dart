@@ -77,8 +77,7 @@ class _TodoMapScreenState extends State<TodoMapScreen> {
         .getRouteBetweenCoordinates(
       'AIzaSyDVyFWb5XQugTwcRWp5El-ajr5x0cUcnJ8',
       startingLatLng,
-      endLatLng, 
-
+      endLatLng,
       travelMode: TravelMode.driving,
     )
         .then((value) {
