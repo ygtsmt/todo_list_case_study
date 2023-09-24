@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
           if (state is ProfileLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: Text("Yükleniyor..."));
           } else if (state is ProfileLoaded) {
             final profile = state.profile;
             return Column(
@@ -63,6 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: double.infinity,
             child: FilledButton(
               onPressed: () {
+                auth.signOut();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => const LoginScreen(),

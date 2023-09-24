@@ -24,7 +24,7 @@ class _AddTodoMapState extends State<AddTodoMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Text("KONUM EKLE"),centerTitle: true,),
       body: Stack(
         alignment: Alignment.bottomRight,
         children: [

@@ -16,7 +16,9 @@ class TodoArchiveScreen extends StatelessWidget {
     final auth = FirebaseAuth.instance;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("ARŞİV"),centerTitle: true,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -24,7 +26,7 @@ class TodoArchiveScreen extends StatelessWidget {
               stream: FirestoreServiceTodos().getTodosArchive(auth.currentUser!.uid),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return const Text("Yükleniyor...");
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Hata: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

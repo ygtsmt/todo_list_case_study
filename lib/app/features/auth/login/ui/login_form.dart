@@ -78,8 +78,8 @@ class _LoginFormState extends State<LoginForm> {
                         if (state is! PhoneAuthCodeSentSuccess)
                           TextFormField(
                             controller: _phoneNumberController,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.number,
                             autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'Telefon Numarası',

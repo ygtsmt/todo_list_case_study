@@ -81,7 +81,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                   prefixIcon: Icon(Icons.person_rounded),
                                 ),
                                 keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
+                                textInputAction: TextInputAction.next,
                                 validator: MultiValidator(
                                   [RequiredValidator(errorText: 'Boş bırakılamaz.')],
                                 ),
@@ -98,7 +98,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                   prefixIcon: Icon(Icons.person_rounded),
                                 ),
                                 keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
+                                textInputAction: TextInputAction.next,
                                 validator: MultiValidator([RequiredValidator(errorText: 'Boş bırakılamaz.')]),
                               ),
                             )
@@ -111,7 +111,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             prefixIcon: Icon(Icons.person_outline_outlined),
                           ),
                           keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.done,
+                          textInputAction: TextInputAction.next,
                           validator: MultiValidator([RequiredValidator(errorText: 'Boş bırakılamaz.')]),
                         ),
                         TextFormField(
@@ -121,14 +121,14 @@ class _RegisterFormState extends State<RegisterForm> {
                             prefixIcon: Icon(Icons.email_outlined),
                           ),
                           keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.done,
+                          textInputAction: TextInputAction.next,
                           validator: MultiValidator([RequiredValidator(errorText: 'Boş bırakılamaz.')]),
                         ),
                         if (phoneAuthstate is! PhoneAuthCodeSentSuccess)
                           TextFormField(
                             controller: _phoneNumberController,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.phone,
                             autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'Telefon Numarası',

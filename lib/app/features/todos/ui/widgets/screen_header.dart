@@ -13,7 +13,7 @@ class ScreenHeader extends StatelessWidget {
       stream: FirestoreServiceTodos().getTodos(userId),
       builder: (context, todosSnapshot) {
         if (todosSnapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const Text("Yükleniyor...");
         } else if (todosSnapshot.hasError) {
           return Center(child: Text('Hata: ${todosSnapshot.error}'));
         } else {
@@ -24,7 +24,7 @@ class ScreenHeader extends StatelessWidget {
             stream: FirestoreServiceTodos().getTodosArchive(userId),
             builder: (context, archiveSnapshot) {
               if (archiveSnapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return const Text("Yükleniyor...");
               } else if (archiveSnapshot.hasError) {
                 return Center(child: Text('Hata: ${archiveSnapshot.error}'));
               } else {
@@ -51,15 +51,16 @@ class ScreenHeader extends StatelessWidget {
                             child: Text("Arşivlenenler Notlar: $archivedTodosCount"),
                           ),
                         ),
-                        FilledButton.icon(
-                          label: const Text("Arşiv"),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const TodoArchiveScreen()),
-                            );
-                          },
-                          icon: const Icon(Icons.archive_outlined),
+                        Expanded(
+                          child: FilledButton(
+                            child: const Text("Arşiv"),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const TodoArchiveScreen()),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),

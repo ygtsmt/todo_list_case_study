@@ -141,7 +141,7 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
                         ),
                         TextFormField(
                           controller: _noteAddressController,
-                          textInputAction: TextInputAction.next,
+                          textInputAction: TextInputAction.done,
                           keyboardType: TextInputType.text,
                           autocorrect: false,
                           decoration: const InputDecoration(
