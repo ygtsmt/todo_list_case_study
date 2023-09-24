@@ -12,11 +12,12 @@ import 'package:todo_list_case_study/app/features/profile/data/profile_services.
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
 import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
 import 'package:todo_list_case_study/core/firebase_options.dart';
+import 'package:todo_list_case_study/core/permission.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  requestLocationPermission();
   runApp(const MainApp());
 }
 
@@ -39,9 +40,7 @@ class MainApp extends StatelessWidget {
           BlocProvider<ProfileBloc>(
             create: (BuildContext context) => ProfileBloc(FirestoreServiceProfile()),
           ),
-          BlocProvider<TodoBloc>(
-            create: (BuildContext context) => TodoBloc(FirestoreServiceTodos())),
-          
+          BlocProvider<TodoBloc>(create: (BuildContext context) => TodoBloc(FirestoreServiceTodos())),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

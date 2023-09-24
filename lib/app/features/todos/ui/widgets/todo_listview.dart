@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list_case_study/app/features/todos/data/model/todo_model.dart';
 import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
-import 'package:todo_list_case_study/app/features/todos/features/ui/todo_map.dart';
+import 'package:todo_list_case_study/app/features/todos/ui/todo_map.dart';
 
 class TodoListView extends StatelessWidget {
   const TodoListView({
@@ -36,7 +36,7 @@ class TodoListView extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const TodoMapScreen()),
+                    MaterialPageRoute(builder: (context) => TodoMapScreen(location: todo.location!)),
                   );
                 },
                 child: Card(
@@ -66,6 +66,11 @@ class TodoListView extends StatelessWidget {
                             ),
                             Text(
                               "${difference.inDays} gün kaldı",
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "${todo.location!.latitude}s${todo.location!.latitude}",
                               style: Theme.of(context).textTheme.titleSmall,
                               textAlign: TextAlign.center,
                             ),

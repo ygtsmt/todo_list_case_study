@@ -8,10 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_event.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_state.dart';
 import 'package:todo_list_case_study/app/features/todos/data/model/todo_model.dart';
+import 'package:todo_list_case_study/app/features/todos/ui/add_todo_map.dart';
 import 'package:uuid/uuid.dart';
 
 class TodosFormScreen extends StatefulWidget {
@@ -37,13 +39,26 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
   DateTime selectedDateLast = DateTime.now();
   final TextEditingController _firstDateController = TextEditingController();
   final TextEditingController _lastDateController = TextEditingController();
-
+  double? selectedLatitude;
+  double? selectedLongitude;
   @override
   void initState() {
     super.initState();
     final auth = FirebaseAuth.instance;
     userUID = auth.currentUser!.uid;
     todoUuid = uuid.v1();
+    loadData();
+  }
+
+  void loadData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      final double? latitude = prefs.getDouble('selectedLatitude');
+      final double? longitude = prefs.getDouble('selectedLongitude');
+
+      selectedLatitude = latitude;
+      selectedLongitude = longitude;
+    });
   }
 
   @override
@@ -53,171 +68,183 @@ class _TodosFormScreenState extends State<TodosFormScreen> {
         centerTitle: true,
         title: const Text("Not Ekle"),
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<TodoBloc, TodoState>(
-          builder: (context, state) {
-            return SafeArea(
-              minimum: const EdgeInsets.all(8),
-              child: GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton(
-                              onPressed: () {
-                                _showPicker(context);
-                              },
-                              child: const Text("Görsel Ekle"))),
-                      _todoImage != null
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: SizedBox(
-                                  height: 200,
-                                  child: _todoImage,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: BlocBuilder<TodoBloc, TodoState>(
+            builder: (context, state) {
+              return SafeArea(
+                minimum: const EdgeInsets.all(8),
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  _showPicker(context);
+                                },
+                                child: const Text("Görsel Ekle"))),
+                        _todoImage != null
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: SizedBox(
+                                    height: 200,
+                                    child: _todoImage,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        TextFormField(
+                          controller: _noteTitleController,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          decoration: const InputDecoration(
+                            labelText: 'Not Başlığı',
+                            prefixIcon: Icon(
+                              Icons.title_outlined,
+                            ),
+                          ),
+                          validator: MultiValidator(
+                            [
+                              RequiredValidator(errorText: 'Boş bırakılamaz.'),
+                            ],
+                          ),
+                        ),
+                        TextFormField(
+                          controller: _noteDescriptionController,
+                          textInputAction: TextInputAction.newline,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          autocorrect: false,
+                          decoration: const InputDecoration(
+                            labelText: 'Not İçeriği',
+                            prefixIcon: Icon(
+                              Icons.text_fields_outlined,
+                            ),
+                          ),
+                          validator: MultiValidator(
+                            [
+                              RequiredValidator(errorText: 'Boş bırakılamaz.'),
+                            ],
+                          ),
+                        ),
+                        TextFormField(
+                          controller: _noteAddressController,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          decoration: const InputDecoration(
+                            labelText: 'Yer Bilgisi',
+                            prefixIcon: Icon(
+                              Icons.location_city_outlined,
+                            ),
+                          ),
+                          validator: MultiValidator(
+                            [
+                              RequiredValidator(errorText: 'Boş bırakılamaz.'),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _selectDateStart(context);
+                                  },
+                                  child: const Text("Başlangıç Tarihi"),
                                 ),
                               ),
-                            )
-                          : Container(),
-                      TextFormField(
-                        controller: _noteTitleController,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        autocorrect: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Not Başlığı',
-                          prefixIcon: Icon(
-                            Icons.title_outlined,
-                          ),
-                        ),
-                        validator: MultiValidator(
-                          [
-                            RequiredValidator(errorText: 'Boş bırakılamaz.'),
-                          ],
-                        ),
-                      ),
-                      TextFormField(
-                        controller: _noteDescriptionController,
-                        textInputAction: TextInputAction.newline,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        autocorrect: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Not İçeriği',
-                          prefixIcon: Icon(
-                            Icons.text_fields_outlined,
-                          ),
-                        ),
-                        validator: MultiValidator(
-                          [
-                            RequiredValidator(errorText: 'Boş bırakılamaz.'),
-                          ],
-                        ),
-                      ),
-                      TextFormField(
-                        controller: _noteAddressController,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        autocorrect: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Yer Bilgisi',
-                          prefixIcon: Icon(
-                            Icons.location_city_outlined,
-                          ),
-                        ),
-                        validator: MultiValidator(
-                          [
-                            RequiredValidator(errorText: 'Boş bırakılamaz.'),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _selectDateStart(context);
-                                },
-                                child: const Text("Başlangıç Tarihi"),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _selectDateEnd(context);
+                                  },
+                                  child: const Text("Bitiş Tarihi"),
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            if (_firstDateController.text.isNotEmpty)
+                              Card(
+                                  elevation: 20,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(_firstDateController.text),
+                                  )),
+                            if (_lastDateController.text.isNotEmpty)
+                              Card(
+                                  elevation: 20,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(_lastDateController.text),
+                                  )),
+                          ],
+                        ),
+                        SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
                                 onPressed: () {
-                                  _selectDateEnd(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const AddTodoMap()),
+                                  );
                                 },
-                                child: const Text("Bitiş Tarihi"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          if (_firstDateController.text.isNotEmpty)
-                            Card(
-                                elevation: 20,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(_firstDateController.text),
-                                )),
-                          if (_lastDateController.text.isNotEmpty)
-                            Card(
-                                elevation: 20,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(_lastDateController.text),
-                                )),
-                        ],
-                      ),
-                      SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton(onPressed: () {}, child: const Text("Konum Ekle"))),
-                      SizedBox(
-                          width: double.infinity,
-                          child: FilledButton(
-                              onPressed: () {
-                                final firstDate = Timestamp.fromDate(selectedDateFirst);
-                                final lastDate = Timestamp.fromDate(selectedDateLast);
+                                child: const Text("Konum Ekle"))),
+                        SizedBox(
+                            width: double.infinity,
+                            child: FilledButton(
+                                onPressed: () async {
+                                  final firstDate = Timestamp.fromDate(selectedDateFirst);
+                                  final lastDate = Timestamp.fromDate(selectedDateLast);
 
-                                final todo = TodoModel(
-                                    id: todoUuid,
-                                    title: _noteTitleController.text,
-                                    description: _noteDescriptionController.text,
-                                    address: _noteAddressController.text,
-                                    startDate: firstDate,
-                                    finishDate: lastDate,
-                                    location: "location",
-                                    imageUrl: imageUrl);
+                                  final todo = TodoModel(
+                                      id: todoUuid,
+                                      title: _noteTitleController.text,
+                                      description: _noteDescriptionController.text,
+                                      address: _noteAddressController.text,
+                                      startDate: firstDate,
+                                      finishDate: lastDate,
+                                      location: GeoPoint(selectedLatitude!, selectedLongitude!),
+                                      imageUrl: imageUrl);
 
-                                BlocProvider.of<TodoBloc>(context).add(AddTodo(todo, userUID));
-                                Navigator.pop(context);
-                              },
-                              child: const Text("OLUŞTUR"))),
-                    ],
+                                  BlocProvider.of<TodoBloc>(context).add(AddTodo(todo, userUID));
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("OLUŞTUR"))),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

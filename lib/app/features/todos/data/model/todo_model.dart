@@ -7,7 +7,7 @@ class TodoModel {
   String? address;
   Timestamp? startDate;
   Timestamp? finishDate;
-  String? location;
+  GeoPoint? location;
   String? imageUrl;
 
   TodoModel({
@@ -28,7 +28,7 @@ class TodoModel {
     String? address,
     Timestamp? startDate,
     Timestamp? finishDate,
-    String? location,
+    GeoPoint? location,
     String? imageUrl,
   }) {
     return TodoModel(
