@@ -19,7 +19,7 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController(text: "+90");
   final TextEditingController _userNickName = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userSurnameController = TextEditingController();

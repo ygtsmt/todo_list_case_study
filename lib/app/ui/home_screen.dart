@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_adaptive_ui/flutter_adaptive_ui.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:todo_list_case_study/app/bloc/bloc/app_bloc.dart";
+import "package:todo_list_case_study/app/bloc/app_bloc.dart";
 import "package:todo_list_case_study/app/features/profile/ui/profile_screen.dart";
 import "package:todo_list_case_study/app/features/todos/ui/todos_screen.dart";
 
