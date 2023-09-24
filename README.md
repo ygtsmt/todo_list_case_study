@@ -52,3 +52,4 @@
   </tr>
   
 </table>
+* Todo eklemek için e-mail doğrulaması ve yaklaşan todolar için bildirim gösterme olayı eksik. Ekran kaydını Google Drive üzerinden benimle paylaştığınız klasöre ekledim.
