@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_case_study/app/features/todos/data/model/todo_model.dart';
 import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
+import 'package:todo_list_case_study/app/features/todos/ui/todos_archive_screen.dart';
 
 class ScreenHeader extends StatelessWidget {
   final String userId;
@@ -52,12 +53,16 @@ class ScreenHeader extends StatelessWidget {
                         ),
                         FilledButton.icon(
                           label: const Text("Arşiv"),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const TodoArchiveScreen()),
+                            );
+                          },
                           icon: const Icon(Icons.archive_outlined),
                         ),
                       ],
                     ),
-                    
                   ],
                 );
               }

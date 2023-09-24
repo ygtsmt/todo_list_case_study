@@ -29,6 +29,7 @@ class FirestoreServiceTodos {
       }).toList();
     });
   }
+
   Stream<List<TodoModel>> getTodosArchive(String userUid) {
     final userDocRef = FirebaseFirestore.instance.collection('users').doc(userUid);
 
@@ -130,6 +131,29 @@ class FirestoreServiceTodos {
           final updatedTodos = todosList.where((todo) => todo['id'] != todoId).toList();
 
           await userDocRef.update({'todos': updatedTodos});
+        }
+      }
+    } catch (e) {
+      print("Hata: $e");
+    }
+  }
+
+  Future<void> deleteTodoArchive(
+    String todoId,
+    String userUid,
+  ) async {
+    try {
+      final userDocRef = FirebaseFirestore.instance.collection('users').doc(userUid);
+
+      final userDoc = await userDocRef.get();
+
+      if (userDoc.exists) {
+        final todosList = userDoc.data()?['todos_archive'] as List<dynamic>?;
+
+        if (todosList != null) {
+          final updatedTodos = todosList.where((todo) => todo['id'] != todoId).toList();
+
+          await userDocRef.update({'todos_archive': updatedTodos});
         }
       }
     } catch (e) {

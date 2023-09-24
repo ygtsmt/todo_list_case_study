@@ -35,3 +35,10 @@ class DeleteTodo extends TodoEvent {
 
   DeleteTodo(this.todoId, this.userId);
 }
+
+class DeleteTodoArchive extends TodoEvent {
+  final String userId;
+  final String todoId;
+
+  DeleteTodoArchive(this.todoId, this.userId);
+}

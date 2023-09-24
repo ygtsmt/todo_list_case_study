@@ -57,5 +57,15 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       }
     });
 
+    on<DeleteTodoArchive>((event, emit) async {
+      try {
+        emit(TodoLoading());
+        await _firestoreService.deleteTodoArchive(event.todoId,event.userId);
+        emit(TodoOperationSuccess('Todo Archived successfully.'));
+      } catch (e) {
+        emit(TodoError('Failed to delete todo.'));
+      }
+    });
+
   }
 }
