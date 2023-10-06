@@ -11,6 +11,7 @@ import 'package:todo_list_case_study/app/features/profile/bloc/profile_bloc.dart
 import 'package:todo_list_case_study/app/features/profile/data/profile_services.dart';
 import 'package:todo_list_case_study/app/features/todos/bloc/todos_bloc.dart';
 import 'package:todo_list_case_study/app/features/todos/data/todo_services.dart';
+import 'package:todo_list_case_study/core/colors.dart';
 import 'package:todo_list_case_study/core/firebase_options.dart';
 import 'package:todo_list_case_study/core/permission.dart';
 
@@ -44,7 +45,11 @@ class MainApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData.dark(useMaterial3: true),
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: lightColorScheme,
+            //  fontFamily: GoogleFonts.lato().fontFamily,
+          ),
           home: const LoginScreen(),
         ));
   }

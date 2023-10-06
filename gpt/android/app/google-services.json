@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "68491047989",
+    "project_id": "flutter-gpt-until",
+    "storage_bucket": "flutter-gpt-until.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68491047989:android:38999f7fd47bf6b3e02d7c",
+        "android_client_info": {
+          "package_name": "com.example.gpt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhLfhDdafLARXINPEa8k4N53vJWmmvpOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

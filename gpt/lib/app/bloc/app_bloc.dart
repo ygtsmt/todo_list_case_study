@@ -1,5 +1,5 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
