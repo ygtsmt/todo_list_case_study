@@ -37,7 +37,7 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           );
         }
-
+        
         if (state is PhoneAuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
